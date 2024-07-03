@@ -2610,8 +2610,8 @@ int ff_range_add(RangeList *rl, unsigned int start, unsigned int len)
         Range *cur  = &rl->ranges[idx];
         if (prev->start + prev->len == cur->start) {
             prev->len += cur->len;
-            memmove(rl->ranges + idx - 1, rl->ranges + idx,
-                    sizeof(*rl->ranges) * (rl->nb_ranges - idx));
+            memmove(rl->ranges + idx, rl->ranges + idx + 1,
+                    sizeof(*rl->ranges) * (rl->nb_ranges - idx - 1));
             rl->nb_ranges--;
             idx--;
         }
@@ -2621,8 +2621,8 @@ int ff_range_add(RangeList *rl, unsigned int start, unsigned int len)
         Range *next = &rl->ranges[idx + 1];
         if (cur->start + cur->len == next->start) {
             cur->len += next->len;
-            memmove(rl->ranges + idx, rl->ranges + idx + 1,
-                    sizeof(*rl->ranges) * (rl->nb_ranges - idx - 1));
+            memmove(rl->ranges + idx + 1, rl->ranges + idx + 2,
+                    sizeof(*rl->ranges) * (rl->nb_ranges - idx - 2));
             rl->nb_ranges--;
         }
     }
